@@ -939,7 +939,21 @@
         
         <!--Custom JS-->
         <script src="assets/js/custom.js"></script>
-        
+
+	<script>
+        // Function to change violet text to DodgerBlue
+        function changeVioletToDodgerBlue() {
+            document.querySelectorAll('*').forEach(function(element) {
+                if (getComputedStyle(element).color === 'rgb(238, 130, 238)') { // RGB value of violet
+                    element.style.color = 'DodgerBlue';
+                }
+            });
+        }
+
+        // Call the function to change the colors
+        changeVioletToDodgerBlue();
+    	</script>
+		
     </body>
 	
 </html>
