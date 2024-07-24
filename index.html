@@ -941,17 +941,36 @@
         <script src="assets/js/custom.js"></script>
 
 	<script>
-        // Function to change violet text to DodgerBlue
-        function changeVioletToDodgerBlue() {
-            document.querySelectorAll('*').forEach(function(element) {
-                if (getComputedStyle(element).color === 'rgb(238, 130, 238)') { // RGB value of violet
-                    element.style.color = 'DodgerBlue';
-                }
-            });
-        }
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to change color
+            function changeColor() {
+                // Change color in inline styles
+                let elementsWithInlineStyles = document.querySelectorAll('[style*="darkviolet"]');
+                elementsWithInlineStyles.forEach(element => {
+                    element.style.cssText = element.style.cssText.replace(/darkviolet/g, 'dodgerblue');
+                });
 
-        // Call the function to change the colors
-        changeVioletToDodgerBlue();
+                // Change color in stylesheet rules
+                for (let stylesheet of document.styleSheets) {
+                    try {
+                        for (let rule of stylesheet.cssRules) {
+                            if (rule.style && rule.style.color === 'darkviolet') {
+                                rule.style.color = 'dodgerblue';
+                            }
+                            if (rule.style && rule.style.backgroundColor === 'darkviolet') {
+                                rule.style.backgroundColor = 'dodgerblue';
+                            }
+                            // Add more properties if needed
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+            }
+
+            // Call the function to change the color
+            changeColor();
+        });
     	</script>
 		
     </body>
