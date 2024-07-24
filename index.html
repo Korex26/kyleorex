@@ -942,22 +942,51 @@
 
 	<script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Function to convert hex color to RGB
+            function hexToRgb(hex) {
+                let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+                hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+                    return r + r + g + g + b + b;
+                });
+
+                let bigint = parseInt(hex.substring(1), 16);
+                let r = (bigint >> 16) & 255;
+                let g = (bigint >> 8) & 255;
+                let b = bigint & 255;
+
+                return [r, g, b];
+            }
+
+            // Function to determine if a color is a shade of pink or purple
+            function isPinkOrPurple(rgb) {
+                let [r, g, b] = rgb;
+                return (r > b && r > g && (r - b > 20 || r - g > 20)) && !(g > b);
+            }
+
             // Function to change color
             function changeColor() {
-                // Change color in inline styles
-                let elementsWithInlineStyles = document.querySelectorAll('[style*="darkviolet"]');
-                elementsWithInlineStyles.forEach(element => {
-                    element.style.cssText = element.style.cssText.replace(/darkviolet/g, 'dodgerblue');
+                let elements = document.querySelectorAll('*');
+
+                elements.forEach(element => {
+                    let style = getComputedStyle(element);
+
+                    // Change inline styles
+                    if (style.color && isPinkOrPurple(hexToRgb(style.color))) {
+                        element.style.color = 'dodgerblue';
+                    }
+                    if (style.backgroundColor && isPinkOrPurple(hexToRgb(style.backgroundColor))) {
+                        element.style.backgroundColor = 'dodgerblue';
+                    }
                 });
 
                 // Change color in stylesheet rules
                 for (let stylesheet of document.styleSheets) {
                     try {
                         for (let rule of stylesheet.cssRules) {
-                            if (rule.style && rule.style.color === 'darkviolet') {
+                            if (rule.style && rule.style.color && isPinkOrPurple(hexToRgb(rule.style.color))) {
                                 rule.style.color = 'dodgerblue';
                             }
-                            if (rule.style && rule.style.backgroundColor === 'darkviolet') {
+                            if (rule.style && rule.style.backgroundColor && isPinkOrPurple(hexToRgb(rule.style.backgroundColor))) {
                                 rule.style.backgroundColor = 'dodgerblue';
                             }
                             // Add more properties if needed
