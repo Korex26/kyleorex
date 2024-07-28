@@ -1,4 +1,5 @@
 ABOUT
 - This repository contains the files used to create my personal website.
-- 
+- The index.html file contains the overall code for the website.
+- The assets file contains all the subsequent code called up by 
 
